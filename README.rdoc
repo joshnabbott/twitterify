@@ -21,16 +21,6 @@ You're done with installation.
 
 === Examples
 
-=== Installation
-
-* ./script/plugin install git://github.com/joshnabbott/twitter.git
-
-* Now open up /config/twitter.yml and change the settings to your own personal Twitter account settings.
-
-You're done with installation.
-
-=== Examples
-
 To enable "auto-tweeting" when you create a new blog post (for example) you'll need to do something like this in your BlogPost model:
   twitterify :url, :title
 
