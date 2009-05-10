@@ -1,6 +1,3 @@
-require 'rubygems'
-require 'hpricot'
-require 'cgi'
 require 'httparty'
 require 'twitterify'
 ActiveRecord::Base.instance_eval { include FuKing::Twitterify }
