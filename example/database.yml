@@ -1,6 +1,0 @@
-twitterify:
-  username: your_twitter_username
-  password: your_twitter_password
-  development_uri: localhost:3000
-  test_uri: localhost:3000
-  production_uri: yourdomainname.com
