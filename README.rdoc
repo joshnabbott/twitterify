@@ -1,0 +1,75 @@
+= Twitterify
+==== Another Twitter plugin for Rails
+
+Twitterify your Rails application with this plugin.
+It gives you basic Twitter functionality (read statuses, update statuses) all with a few basic commands.
+
+I created this plugin to automatically tweet each time I post a new blog post on my blog, so for right now, it pretty much supports what's needed to do just that. You can also get your Twitter statuses with this plugin. I'm not using that, but I figured it could be useful for those who would install this plugin.
+
+Not only can you read and post statuses using this plugin, but the Twitterify (Twit-TERRIFY) module gives you the ability to tweet when you post a new blog post. See examples below for how this works.
+
+This plugin was built based off of the Twitter API docs located here: http://apiwiki.twitter.com/REST+API+Documentation
+
+You might want to read that to see what options can be passed to twitter with this plugin. ONCE AGAIN - this plugin only supports *basic* functionality. At the moment it's what you'll find under http://apiwiki.twitter.com/REST+API+Documentation#usertimeline and http://apiwiki.twitter.com/REST+API+Documentation#update
+
+And even then, it's not fully supporting the options there. That should change soon.
+
+Please note, this plugin is actually two in one. It contains a Twitter class that give you the basic API functionality, and the Twitterify module for the <tt>twitterify</tt> functionality. I'll probably extract them into their own plugins at some point, but for now, this should get you up and running quickly.
+
+=== Installation
+
+* ./script/plugin install git://github.com/joshnabbott/twitter.git
+
+* Now open up /config/twitter.yml and change the settings to your own personal Twitter account settings.
+
+You're done with installation.
+
+=== Twitter Examples
+
+== Get statuses:
+  @tweets = FuKing::Twitter.read_status
+  
+Just like the Twitter docs say, this will return your 20 most recent tweets. You can pass in options specified in the Twitter API docs like "count", "page", "since", etc.
+
+A few examples are:
+  @tweets = FuKing::Twitter.read_status(:count => 5)
+  @tweets = FuKing::Twitter.read_status(:page => 3)
+  @tweets = FuKing::Twitter.read_status(:since => Date.new - 1.day)
+  @tweets = FuKing::twitter.read_status(:count => 10, :page => 5)
+
+Since the read_status method returns an array, you can perform the typical array methods on this collection of Twitter statuses (http://ruby-doc.org/core/classes/Array.html):
+
+== Post a status:
+  @tweet = FuKing::Twitter.update("Testing 1,2,3... Is this thing on?")
+
+If the status post is successful, it will return a Tweet object with the normal instance methods ("text" and "created_at"). If not, it will raise an error with the status code and status message (ie: "401 Unauthorized" if authentication fails.)
+
+Right now, the post_status method doesn't accept any options. Just a status message. I hope to change this soon. Also, please note that if your /config/twitter.yml files doesn't have a value for the environment that you're in, it won't post your tweet and will write something like this "Skipping tweet in RAILS_ENV=test. To change this, specify a value for test_uri in config/twitter.yml." to your log file for that environment (this example being /log/test.log).
+
+=== Twitterify Examples
+
+To enable "auto-tweeting" when you create a new blog post (for example) you'll need to do something like this in your BlogPost model:
+  twitterify :url, :title
+
+Twitterify does not require any options to be passed to it. By default it will just tweet the url to the blog post. Any instance method of BlogPost can be passed to twitterify, although, a twitter status update cannot exceed 160 characters or it will be truncated to fit.
+
+Additionally, you may pass conditionals, such as <tt>:if</tt> or <tt>:unless</tt> in the form of a Proc. An example would be this:
+
+Only tweet if the is_published? method returns true.
+  twitterify :url, :title, :if => Proc.new { |record| record.is_published? }
+
+This is assuming that is_published? is a method of the Blog Post object.
+
+Only tweet if the post is a new record being created.
+  twitterify :url, :title, :if => Proc.new { |record| record.new_record? }
+
+== Contributing
+
+Check out the Twitter source with
+  $ git clone git://github.com/joshnabbott/twitter.git
+
+GitHub pull requests are welcome.
+
+== License
+
+Copyright (c) 2008 Josh N. Abbott (http://iammrjoshua.com), released under the MIT license
