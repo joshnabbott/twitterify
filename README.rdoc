@@ -1,0 +1,48 @@
+= Twitterify
+==== Another Twitter plugin for Rails
+
+Twitterify your Rails application with this plugin.
+
+I created this plugin to automatically tweet each time I post a new blog post on my blog, so for right now, it pretty much supports what's needed to do just that.
+
+This plugin was built based off of the Twitter API docs located here: http://apiwiki.twitter.com/REST+API+Documentation
+
+You might want to read that to see what options can be passed to twitter with this plugin. ONCE AGAIN - this plugin only supports *basic* functionality. At the moment it's what you'll find under http://apiwiki.twitter.com/REST+API+Documentation#usertimeline and http://apiwiki.twitter.com/REST+API+Documentation#update
+
+And even then, it's not fully supporting the options there. That should change soon.
+
+=== Installation
+
+* ./script/plugin install git://github.com/joshnabbott/twitterify.git
+
+* Now open up /config/twitterify.yml and change the settings to your own personal Twitter account settings.
+
+You're done with installation.
+
+=== Examples
+
+To enable "auto-tweeting" when you create a new blog post (for example) you'll need to do something like this in your BlogPost model:
+  twitterify :url, :title
+
+Twitterify does not require any options to be passed to it. By default it will just tweet the url to the blog post. Any instance method of BlogPost can be passed to twitterify, although, a twitter status update cannot exceed 160 characters or it will be truncated to fit.
+
+Additionally, you may pass conditionals, such as <tt>:if</tt> or <tt>:unless</tt> in the form of a Proc. An example would be this:
+
+Only tweet if the is_published? method returns true.
+  twitterify :url, :title, :if => Proc.new { |record| record.is_published? }
+
+This is assuming that is_published? is a method of the Blog Post object.
+
+Only tweet if the post is a new record being created.
+  twitterify :url, :title, :if => Proc.new { |record| record.new_record? }
+
+== Contributing
+
+Check out the Twitter source with
+  $ git clone git://github.com/joshnabbott/twitter.git
+
+GitHub pull requests are welcome.
+
+== License
+
+Copyright (c) 2008 Josh N. Abbott (http://iammrjoshua.com), released under the MIT license
