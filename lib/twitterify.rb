@@ -13,10 +13,8 @@ module FuKing
       def twitterify(*options)
         return if self.included_modules.include?(FuKing::Twitterify::InstanceMethods)
         instance_eval { include FuKing::Twitterify::InstanceMethods }
-        # send(:include, FuKing::Twitterify::InstanceMethods)
         # include this so the model has access to it's URL
         instance_eval { include ActionController::UrlWriter }
-        # send(:include, ActionController::UrlWriter)
         validate_attributes(options)
         # if twitterify is called but no options are specified
         # this will at least tweet the url
