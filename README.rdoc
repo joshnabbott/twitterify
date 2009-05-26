@@ -11,6 +11,12 @@ You might want to read that to see what options can be passed to twitter with th
 
 And even then, it's not fully supporting the options there. That should change soon.
 
+=== Dependencies
+
+Twitterify is built on John Nunumaker's HTTParty (http://github.com/jnunemaker/httparty/tree/master) so be sure to install it first:
+
+* sudo gem install httparty
+
 === Installation
 
 * ./script/plugin install git://github.com/joshnabbott/twitterify.git
